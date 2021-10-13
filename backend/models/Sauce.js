@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
+var sanitizerPlugin = require('mongoose-sanitizer');
 
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
-  title: { type: String, required: true },
-  manufacturer: { type: String, required: true },
+  name: { type: String, required: true, maxlength: [15, 'Nombre de caractéres limité a 15'] },
+  manufacturer: { type: String, required: true, maxlength: [30, 'Nombre de caractéres limité a 30'] },
   description: { type: String, required: true },
-  mainPepper: { type: String, required: true },
+  mainPepper: { type: String, required: true, maxlength: [15, 'Nombre de caractéres limité a 15'] },
   imageUrl: { type: String, required: true },
   heat: { type: Number, required: true },
-  likes: { type: String, required: true },
-  dislikes: { type: String, required: true },
-  userLiked: { type: String, required: true },
-  userDisliked: { type: String, required: true },
+  likes: { type: Number, required: false, default: 0 },
+  dislikes: { type: Number, required: false, default: 0 },
+  usersLiked: { type: [String], required: false },
+  usersDisliked: { type: [String], required: false },
 });
+
+sauceSchema.plugin(sanitizerPlugin);
 
 module.exports = mongoose.model('Sauce', sauceSchema);
